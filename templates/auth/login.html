@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+{% block navbar %}{% endblock %}
+{% block content %}
+<div class="sidenav">
+    <div class="login-main-text">
+       <h2>Blog test<br> Iniciar Session</h2>
+       <p>Inicie session o registrese para obtener acceso.</p>
+    </div>
+ </div>
+ <div class="main">
+    <div class="col-md-6 col-sm-12">
+       <div class="login-form">
+            {% for message in get_flashed_messages() %}
+                <span style="color:#df2525;">{{ message }}</span>
+            {% endfor %}
+          <form action="" method="POST">
+            {{ form.csrf_token }}
+             <div class="form-group">
+                <label>{{ form.username.label }}</label>
+                {{ form.username(class="form-control",placeholder="Ingrese username")}}                
+             </div>
+             <div class="form-group">
+                <label>{{ form.password_hash.label }}</label>
+                {{ form.password_hash(class="form-control",placeholder="Ingrese contraseña")}}                
+             </div>
+             <div>
+                {{ form.remember_me.label }}
+                {{ form.remember_me }}
+             </div>
+             
+             {{ form.submit(class="btn btn-black")}}
+             <button  class="btn btn-secondary">
+                <a style="color:white;" href="{{ url_for('register')}}">Registrarse</a>
+             </button>             
+          </form>
+       </div>
+    </div>
+ </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>HTML5 con Flask</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+</head>
+<body>
+<img src="{{ avatar }}" alt="mi avatar">
+<form method="POST">
+    {{ form.csrf_token}}
+    {{ form.email.label}}
+    {{ form.email }}
+    {{ form.size.label}}
+    {{ form.size }}
+    {{ form.default.label}}
+    {{ form.default }}
+
+    {{ form.rating.label }}
+    {{ form.rating }}
+    {{ form.submit(class="btn btn-primary")}}
+</form>
+
+
+  
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}base template{% endblock %}</title>
+    
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename ='css/main.css') }}">
+    {% block extra_css %}{% endblock %}
+    {{ moment.include_moment() }}
+</head>
+
+<body style="background-color: #0d0d0ef2; color:#f1f1f1;">
+
+{% for message in get_flashed_messages() %}
+    <span>{{ message }}</span>
+{% endfor %}
+
+{% block navbar %}
+<h1>Bienvenido</h1>
+<h3>Hola, {{ current_user.username }}!</h3>
+<div>
+    Microblog:
+    
+    {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+    {% else %}
+
+        {% if current_user.can(ADMIN) %}
+            <a href="{{ url_for('dashboard_admin') }}">Admin Dashboard</a>
+        {% else %}
+            <a href="{{ url_for('dashboard_view') }}">Dashboard</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        
+        <a href="/usuario/{{current_user.username}}"> Ir a mi Perfil</a>
+
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div>
+    {% if current_user.can(WRITE) %}
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p class="form-body">
+                {{ form.body.label }}<br />
+                {{ form.body(size=32) }}
+                {% for error in form.body.errors %}
+                    <span style="color: red">[{{ error }}]</span>        
+                {% endfor %}
+            </p>
+        <p>{{ form.submit() }}</p>
+        </form>
+    {% endif %}
+</div>
+  
+  {% for post in posts %}
+    <ul class="posts">
+        <l1 class="post">
+            <div>
+                <a href="{{url_for('user', username=post.author.username)}}">
+                <img src="{{ post.author.gravatar() }}"></img>                    
+                </a>
+            </div>
+            <div class="post-card">
+                <div class="post-info">
+                <div class="post-author">
+                <a href="{{url_for('user', username=post.author.username)}}">
+                    {{ post.author.username }}
+                </a>
+            </div>
+            <div class="post-date">{{ moment(post.timestamp).fromNow() }}</div>
+            </div>
+                 <div>{{ post.body }}</div>
+            </div>
+            {% if post.author.username == current_user.username %}
+                <a href="{{ url_for('edit_post', id=post.id)}}" style="height:2em; color:#03d3b6;"><i class="bi bi-pencil-square"></i></a>
+                
+            {% endif %}
+        </l1>
+    </ul>
+  {% endfor %}
+
+{% endblock %}
+
+{{  moment.locale(auto_detect=True) }}
+</body>
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js')}}">
+</html>

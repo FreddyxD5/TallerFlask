@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% block navbar %}{% endblock %}
+
+{% block content %}
+<h1> Admin template </h1>
+    <button class="btn btn-primary"> Crear usuario</button>
+   
+    <table class="table">
+        <thead>
+          <tr>            
+            <th scope="col">username</th>
+            <th scope="col">email</th>
+            <th scope="col">name</th>
+            <th scope="col">location</th>
+            <th scope="col"> Miembro desde </th>
+            <th scope="col"> Acciones</th>            
+          </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+              <tr>
+                  <th scope="row">{{ usuario.username }}</th>
+                  <td>{{ usuario.email }}</td>                  
+                  {% if usuario.name is not none %}
+                    <td>{{ usuario.name }}</td>
+                    {% else %}
+                    <td>No especificado</td>
+                  {% endif %}
+                  
+                  <td>{{ usuario.location }}</td>
+                  <td>{{ usuario.member_since }}</td>
+                  <td>
+                      <button class="btn btn-danger"><a href="{{ url_for('delete_user', id = usuario.id)}}">Eliminar</a></button>
+                      <button class="btn btn-info">Editar</button>
+                  </td>      
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+{% endblock %}

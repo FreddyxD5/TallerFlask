@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="sidenav">
+    <div class="login-main-text">
+       <h2>Blog test<br> Registro</h2>
+       <p>Registrese para obtener acceso.</p>
+    </div>
+ </div>
+ <div class="main">
+    <div class="col-md-6 col-sm-12">
+       <div class="login-form">
+            {% for message in get_flashed_messages() %}
+                <span style="color:#df2525;">{{ message }}</span>
+            {% endfor %}
+          <form action="" method="POST">
+            {{ form.csrf_token }}
+             <div class="form-group">
+                <label>{{ form.username.label }}</label>
+                {{ form.username(class="form-control",placeholder="Ingrese username")}}                
+             </div>
+             <div class="form-group">
+                <label>{{ form.email.label }}</label>
+                {{ form.email(class="form-control",placeholder="Ingrese email")}}                
+             </div>
+             <div class="form-group">
+                <label>{{ form.password_hash.label }}</label>
+                {{ form.password_hash(class="form-control",placeholder="Ingrese contraseña")}}                
+             </div>
+
+             {{ form.submit(class="btn btn-primary")}}
+             <button  class="btn btn-secondary">
+                <a style="color:white;" href="{{ url_for('login')}}">Login</a>
+             </button>             
+          </form>
+       </div>
+    </div>
+ </div>
+{% endblock %}
